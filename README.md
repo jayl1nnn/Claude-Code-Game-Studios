@@ -14,9 +14,18 @@
   <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-15-orange" alt="15 Hooks"></a>
   <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-14-red" alt="14 Rules"></a>
   <a href="https://code.claude.com/docs"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
+  <a href="opencode.jsonc"><img src="https://img.shields.io/badge/also%20runs%20on-OpenCode%20V2-0b7285" alt="OpenCode V2 port"></a>
   <a href="https://www.buymeacoffee.com/donchitos3"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20this%20project-FFDD00?logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee"></a>
   <a href="https://github.com/sponsors/Donchitos"><img src="https://img.shields.io/badge/GitHub%20Sponsors-Support%20this%20project-ea4aaa?logo=githubsponsors&logoColor=white" alt="GitHub Sponsors"></a>
 </p>
+
+---
+
+> **Now runs on OpenCode (V2).** The whole studio works out of the box with
+> [OpenCode](https://opencode.ai/) — all 49 agents, 74 skills, the hook layer and
+> the safety rules are ported to OpenCode's native config. Claude Code still works
+> exactly as before; the two setups live side by side. See
+> [Using OpenCode (V2)](#using-opencode-v2).
 
 ---
 
@@ -37,6 +46,7 @@ The result: you still make every decision, but now you have a team that asks the
 - [Slash Commands](#slash-commands)
 - [Does it produce games, or documents?](#does-it-produce-games-or-documents)
 - [Getting Started](#getting-started)
+  - [Using OpenCode (V2)](#using-opencode-v2)
 - [Configuration](#configuration)
 - [Upgrading](#upgrading)
 - [Project Structure](#project-structure)
@@ -203,6 +213,44 @@ Hooks fail gracefully if optional tools are missing — you just lose validation
    - `/brainstorm` — explore game ideas from scratch
    - `/setup-engine godot 4.7` — configure your engine if you already know
    - `/project-stage-detect` — analyze an existing project
+
+### Using OpenCode (V2)
+
+The studio also runs on OpenCode with no extra setup — open OpenCode in the
+project root (the folder holding `opencode.jsonc` and `AGENTS.md`) and you get the
+same 49-agent team, all 74 slash commands, the hook layer and the safety rules.
+
+```bash
+opencode
+```
+
+OpenCode picks up the ported config automatically:
+
+- **Agents** — all 49 studio agents in `.opencode/agents/` (as subagents).
+- **Commands** — one command per skill in `.opencode/commands/`, so `/start`,
+  `/dev-story`, `/sprint-plan`, and the rest work as usual. The studio's `help`
+  command is named `/studio-help` on OpenCode to avoid clashing with the
+  built-in `/help`.
+- **Hooks & rules** — bridged by
+  `.opencode/plugins/studio-hooks.js` and enforced through `opencode.jsonc`'s
+  permission block.
+- **Project instructions** — `AGENTS.md` (the OpenCode equivalent of
+  `CLAUDE.md`).
+
+Claude Code support is untouched: the original `.claude/` tree still drives a
+`claude` session. The port is generated from it, so the two stay in sync.
+
+A few OpenCode-specific notes:
+
+- Hooks shell out through Git Bash; if Bash isn't installed they no-op rather
+  than block you.
+- OpenCode subagents nest one level deep, so the engine specialists
+  (`godot-specialist`, `unity-specialist`, `unreal-specialist`) hand sub-specialist
+  work back to the parent instead of spawning it themselves.
+- Re-generate the port from the source of truth with
+  `python tools/port-to-opencode.py`, then check it with
+  `python tools/validate-opencode.py`. See `.opencode/docs/opencode-port.md`
+  for the full mapping.
 
 ## Configuration
 

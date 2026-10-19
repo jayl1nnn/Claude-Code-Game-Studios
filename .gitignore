@@ -25,6 +25,13 @@ production/session-state/
 # repository.
 .claude/worktrees/
 
+# === OpenCode Local ===
+# Same per-agent working memory and worktrees as above, under the OpenCode port.
+.opencode/agent-memory/
+.opencode/worktrees/
+# Local, machine-specific OpenCode overrides.
+.opencode/settings.local.json
+
 
 # === Local sandboxes and scratch work ===
 examples/

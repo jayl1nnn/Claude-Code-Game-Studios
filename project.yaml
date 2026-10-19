@@ -1,5 +1,6 @@
 # CCGS project configuration — single source of truth for project settings.
-# See .claude/docs/effects-map.md for full schema.
+# See .opencode/docs/effects-map.md for full schema, or the Claude Code copy at
+# .claude/docs/effects-map.md.
 
 schema_version: 1
 
@@ -23,5 +24,6 @@ framework:
 #
 # Per-developer preferences belong in `project.local.yaml` (gitignored), not
 # here. `/settings --local <key>=<value>` writes there; `/settings <key>=<value>`
-# edits this file. See `.claude/docs/config-resolution.md` for the full
+# edits this file. See `.opencode/docs/config-resolution.md` (or the Claude Code
+# copy at `.claude/docs/config-resolution.md`) for the full
 # precedence order.
